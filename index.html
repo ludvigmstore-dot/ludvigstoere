@@ -611,15 +611,15 @@
       <form class="cform" id="cform">
         <div class="fgrp">
           <label class="flbl" for="name">Navn</label>
-          <input class="finp" type="text" id="name" placeholder="Ditt navn" required />
+          <input class="finp" type="text" id="name" name="name" placeholder="Ditt navn" required />
         </div>
         <div class="fgrp">
           <label class="flbl" for="email">E-post</label>
-          <input class="finp" type="email" id="email" placeholder="deg@bedrift.no" required />
+          <input class="finp" type="email" id="email" name="email" placeholder="deg@bedrift.no" required />
         </div>
         <div class="fgrp">
           <label class="flbl" for="msg">Hva trenger du?</label>
-          <textarea class="ftxt" id="msg" placeholder="Fortell meg kort om prosjektet..." required></textarea>
+          <textarea class="ftxt" id="msg" name="message" placeholder="Fortell meg kort om prosjektet..." required></textarea>
         </div>
         <button type="submit" class="fsub" id="fsub">Send melding</button>
         <p class="fnote">Ingen salgspitch. Bare en ekte samtale.</p>
@@ -694,12 +694,31 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 });
 
 /* ── Form ── */
-document.getElementById('cform').addEventListener('submit', e => {
+document.getElementById('cform').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = document.getElementById('fsub');
-  btn.textContent = 'Sendt ✓';
-  btn.classList.add('sent');
+  btn.textContent = 'Sender...';
   btn.disabled = true;
+  try {
+    const res = await fetch('https://formspree.io/f/xdaraebz', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(e.target)
+    });
+    if (res.ok) {
+      const email = document.getElementById('email').value;
+      btn.textContent = 'Sendt ✓';
+      btn.classList.add('sent');
+      document.querySelector('.fnote').textContent = `Du vil få svar på ${email} innen 24 timer.`;
+      e.target.reset();
+    } else {
+      btn.textContent = 'Noe gikk galt — prøv igjen';
+      btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = 'Noe gikk galt — prøv igjen';
+    btn.disabled = false;
+  }
 });
 </script>
 </body>
