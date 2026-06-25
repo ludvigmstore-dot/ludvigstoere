@@ -463,7 +463,17 @@
     }
 
     /* Skeleton elements */
-    .sk { background: var(--border); border-radius: 3px; flex-shrink: 0; }
+    /* Skeleton defaults on container so JS can override via inheritance */
+    .mock-skel { --sk-fill: 0; --sk-ol: 1; }
+    .sk {
+      background: rgba(212, 208, 200, var(--sk-fill));
+      box-shadow: inset 0 0 0 1.5px rgba(107, 103, 98, var(--sk-ol));
+      border-radius: 3px; flex-shrink: 0;
+    }
+    html[data-theme="dark"] .sk {
+      background: rgba(44, 42, 38, var(--sk-fill));
+      box-shadow: inset 0 0 0 1.5px rgba(74, 72, 68, var(--sk-ol));
+    }
     .sk-nav    { height: 28px; }
     .sk-hw     { display: flex; flex-direction: column; gap: 5px; }
     .sk-ey     { height: 8px;  width: 28%; }
@@ -950,6 +960,12 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
       el.style.opacity   = t;
       el.style.transform = 'translateY(' + ((1 - t) * 14) + 'px)';
     });
+
+    // Stage 1→2 — outlines fill in with grey as Oppsett begins (0.25 → 0.42)
+    // Grunnstruktur = wireframe outlines only; Oppsett = solid filled blocks
+    var fill = smooth(remap(p, 0.25, 0.42));
+    skel.style.setProperty('--sk-fill', fill);
+    skel.style.setProperty('--sk-ol', 1 - fill * 0.85);
 
     // Stage 2/3 — skeleton container fades out once content takes over (0.38 → 0.65)
     skel.style.opacity = 1 - smooth(remap(p, 0.38, 0.65));
