@@ -420,6 +420,141 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
+
+    /* ── BUILD ANIMATION ── */
+    #build { position: relative; border-bottom: 1px solid var(--border); }
+    .build-pin { height: 280vh; position: relative; }
+    .build-sticky {
+      position: sticky; top: 0; height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 22px; overflow: hidden;
+    }
+    .build-hd { text-align: center; }
+    .build-hd .section-label { justify-content: center; margin-bottom: 8px; }
+    .build-hd .section-label::before { display: none; }
+    .build-sub { font-size: 0.85rem; color: var(--muted); }
+
+    /* Device chrome */
+    .device-wrap { position: relative; width: min(640px, calc(100vw - 40px)); }
+    .device-wrap::after {
+      content: ''; position: absolute; inset: -2px;
+      border-radius: 12px; z-index: -1; pointer-events: none;
+      box-shadow: 0 20px 52px rgba(20,18,16,0.16);
+      opacity: var(--dw-shadow, 0);
+    }
+    .device-frame {
+      width: 100%; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg);
+      opacity: 0;
+    }
+    .device-bar {
+      height: 34px; background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 12px; gap: 6px;
+    }
+    .d-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+    .d-url { flex: 1; max-width: 200px; height: 16px; background: var(--border); border-radius: 3px; margin-left: 8px; }
+    .device-screen { position: relative; overflow: hidden; }
+    .mock-canvas { width: 580px; height: 340px; transform-origin: top left; position: relative; }
+    .mock-layer {
+      position: absolute; inset: 0; padding: 14px 12px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    /* Skeleton elements */
+    .sk { background: var(--border); border-radius: 3px; flex-shrink: 0; }
+    .sk-nav    { height: 28px; }
+    .sk-hw     { display: flex; flex-direction: column; gap: 5px; }
+    .sk-ey     { height: 8px;  width: 28%; }
+    .sk-h1     { height: 19px; width: 60%; }
+    .sk-h2     { height: 19px; width: 45%; }
+    .sk-sb     { height: 7px;  width: 74%; }
+    .sk-sb2    { height: 7px;  width: 55%; }
+    .sk-btn    { height: 20px; width: 90px; margin-top: 2px; }
+    .sk-media  { flex: 0 0 88px; }
+    .sk-cards  { display: flex; gap: 7px; }
+    .sk-card   { flex: 1; height: 64px; }
+
+    /* Finished (content) layer */
+    .mock-full { opacity: 0; }
+    .ct-nav {
+      height: 28px; flex-shrink: 0; border-radius: 3px;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 10px; gap: 7px;
+    }
+    .ct-lgo {
+      font-family: 'Playfair Display', serif; font-size: 9px;
+      font-weight: 700; color: var(--ink); margin-right: auto; letter-spacing: -0.01em;
+    }
+    .ct-nl  { font-size: 6px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+    .ct-nbtn {
+      font-size: 6px; font-weight: 600; color: var(--bg); border-radius: 2px;
+      padding: 2px 6px; background: var(--ink); position: relative; overflow: hidden; --polish: 0;
+    }
+    .ct-nbtn::after {
+      content: ''; position: absolute; inset: 0; background: var(--accent);
+      border-radius: inherit; opacity: var(--polish);
+    }
+    .ct-hero { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+    .ct-ey {
+      font-size: 6px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .ct-h1, .ct-h2 {
+      font-family: 'Playfair Display', serif; font-size: 22px;
+      font-weight: 700; line-height: 1.05; color: var(--ink); letter-spacing: -0.02em;
+    }
+    .ct-h2 { margin-bottom: 2px; }
+    .ct-sb { font-size: 6.5px; color: var(--muted); white-space: nowrap; }
+    .ct-cta {
+      font-size: 7px; font-weight: 600; color: var(--bg); border-radius: 3px;
+      padding: 4px 10px; background: var(--ink); width: fit-content;
+      margin-top: 5px; position: relative; overflow: hidden; --polish: 0;
+    }
+    .ct-cta::after {
+      content: ''; position: absolute; inset: 0; background: var(--accent);
+      border-radius: inherit; opacity: var(--polish);
+    }
+    .ct-media {
+      flex: 0 0 88px; border-radius: 3px; overflow: hidden;
+      background: linear-gradient(135deg, #EDE9E1 0%, #D4D0C8 100%);
+      position: relative; --polish: 0;
+    }
+    html[data-theme="dark"] .ct-media {
+      background: linear-gradient(135deg, #1C1A17 0%, #2C2A26 100%);
+    }
+    .ct-media::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(200,75,49,0.18) 0%, rgba(200,75,49,0.04) 100%);
+      opacity: var(--polish);
+    }
+    .ct-cards { display: flex; gap: 7px; }
+    .ct-card {
+      flex: 1; height: 64px; border-radius: 3px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 8px 7px; display: flex; flex-direction: column; gap: 4px;
+    }
+    .ct-ci { width: 14px; height: 14px; border-radius: 2px; background: var(--border); }
+    .ct-ct { font-size: 6.5px; font-weight: 600; color: var(--ink); }
+
+    /* Stage label */
+    .build-stage {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--dim); min-height: 18px;
+    }
+
+    /* Reduced motion: show finished state statically, no scroll-pin */
+    @media (prefers-reduced-motion: reduce) {
+      .build-pin    { height: auto; }
+      .build-sticky { position: static; height: auto; padding: 100px 0; }
+      .device-frame { opacity: 1 !important; }
+      .device-wrap  { --dw-shadow: 1; }
+      .mock-skel    { opacity: 0 !important; }
+      .mock-full    { opacity: 1 !important; transform: none !important; }
+      .mock-full .ct-cta, .mock-full .ct-nbtn, .mock-full .ct-media { --polish: 1; }
+      .build-stage  { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -502,6 +637,77 @@
       <div class="stat-item rv d2">
         <div class="stat-big display" data-target="100" data-suffix="%">0%</div>
         <p class="stat-label">Skreddersydd kode. Ingen WordPress-maler, ingen snarveier.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD ANIMATION -->
+<section id="build">
+  <div class="build-pin" id="build-pin">
+    <div class="build-sticky">
+      <div class="build-hd">
+        <p class="section-label">Prosessen</p>
+        <p class="build-sub">Scroll og se en nettside ta form fra bunnen.</p>
+      </div>
+      <div class="device-wrap" aria-hidden="true">
+        <div class="device-frame" id="device-frame">
+          <div class="device-bar">
+            <span class="d-dot"></span><span class="d-dot"></span><span class="d-dot"></span>
+            <span class="d-url"></span>
+          </div>
+          <div class="device-screen" id="device-screen">
+            <div class="mock-canvas" id="mock-canvas">
+
+              <!-- Skeleton layer -->
+              <div class="mock-layer mock-skel" id="mock-skel">
+                <div class="sk sk-nav"></div>
+                <div class="sk-hw">
+                  <div class="sk sk-ey"></div>
+                  <div class="sk sk-h1"></div>
+                  <div class="sk sk-h2"></div>
+                  <div class="sk sk-sb"></div>
+                  <div class="sk sk-sb2"></div>
+                  <div class="sk sk-btn"></div>
+                </div>
+                <div class="sk sk-media"></div>
+                <div class="sk-cards">
+                  <div class="sk sk-card"></div>
+                  <div class="sk sk-card"></div>
+                  <div class="sk sk-card"></div>
+                </div>
+              </div>
+
+              <!-- Finished (content) layer -->
+              <div class="mock-layer mock-full" id="mock-full">
+                <div class="ct-nav">
+                  <span class="ct-lgo">LudvigStoere</span>
+                  <span class="ct-nl">Tjenester</span>
+                  <span class="ct-nl">Om meg</span>
+                  <span class="ct-nbtn">Kontakt</span>
+                </div>
+                <div class="ct-hero">
+                  <span class="ct-ey">Webutvikling · Norway</span>
+                  <div class="ct-h1">Din nettside</div>
+                  <div class="ct-h2">på dager.</div>
+                  <span class="ct-sb">Presis webutvikling med AI-verktøy.</span>
+                  <span class="ct-sb">For en brøkdel av hva byråer tar.</span>
+                  <div class="ct-cta">Kontakt meg</div>
+                </div>
+                <div class="ct-media"></div>
+                <div class="ct-cards">
+                  <div class="ct-card"><div class="ct-ci"></div><div class="ct-ct">Rask</div></div>
+                  <div class="ct-card"><div class="ct-ci"></div><div class="ct-ct">Rimelig</div></div>
+                  <div class="ct-card"><div class="ct-ci"></div><div class="ct-ct">Skreddersydd</div></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="build-stage" aria-hidden="true" id="build-stage">
+        <span id="build-stage-txt">Grunnstruktur</span>
       </div>
     </div>
   </div>
@@ -692,6 +898,94 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   html.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
 });
+
+/* ── Build animation ── */
+(function () {
+  var frame   = document.getElementById('device-frame');
+  var screen  = document.getElementById('device-screen');
+  var canvas  = document.getElementById('mock-canvas');
+  var pin     = document.getElementById('build-pin');
+  var skel    = document.getElementById('mock-skel');
+  var full    = document.getElementById('mock-full');
+  var stageTxt = document.getElementById('build-stage-txt');
+  var dWrap   = frame.parentElement;
+
+  // Scale fixed-size canvas (580×340) to fit the frame width
+  function scaleCanvas() {
+    var s = frame.clientWidth / 580;
+    canvas.style.transform = 'scale(' + s + ')';
+    screen.style.height = Math.round(340 * s) + 'px';
+  }
+  scaleCanvas();
+  window.addEventListener('resize', scaleCanvas, { passive: true });
+
+  // Reduced-motion users see the finished state via CSS — no JS animation needed
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var ctCta   = full.querySelector('.ct-cta');
+  var ctNBtn  = full.querySelector('.ct-nbtn');
+  var ctMedia = full.querySelector('.ct-media');
+  var STAGES  = ['Grunnstruktur', 'Oppsett', 'Innhold', 'Ferdig'];
+  var lastSi  = -1;
+
+  function remap(p, lo, hi) { return Math.max(0, Math.min(1, (p - lo) / (hi - lo))); }
+  function smooth(t) { return t * t * (3 - 2 * t); }
+
+  function getProgress() {
+    var dist = pin.offsetHeight - window.innerHeight;
+    if (dist <= 0) return 0;
+    return Math.max(0, Math.min(1, -pin.getBoundingClientRect().top / dist));
+  }
+
+  function apply(p) {
+    // Stage 1 — frame fades in (0 → 0.2)
+    frame.style.opacity = smooth(remap(p, 0, 0.2));
+
+    // Stage 2/3 — skeleton fades out (0.38 → 0.65)
+    skel.style.opacity = 1 - smooth(remap(p, 0.38, 0.65));
+
+    // Stage 3 — content fades in + settles (0.45 → 0.78)
+    var ct = smooth(remap(p, 0.45, 0.78));
+    full.style.opacity   = ct;
+    full.style.transform = 'translateY(' + ((1 - ct) * 10) + 'px)';
+
+    // Stage 4 — polish: accent floods CTA + nav button, media tints, shadow appears (0.76 → 1.0)
+    var pl = smooth(remap(p, 0.76, 1.0));
+    ctCta.style.setProperty('--polish', pl);
+    ctNBtn.style.setProperty('--polish', pl);
+    ctMedia.style.setProperty('--polish', pl);
+    dWrap.style.setProperty('--dw-shadow', pl);
+
+    // Stage label
+    var si = p < 0.25 ? 0 : p < 0.5 ? 1 : p < 0.75 ? 2 : 3;
+    if (si !== lastSi) { stageTxt.textContent = STAGES[si]; lastSi = si; }
+  }
+
+  var ticking = false;
+  var active  = false;
+
+  function tick() { apply(getProgress()); ticking = false; }
+
+  window.addEventListener('scroll', function () {
+    if (!active || ticking) return;
+    ticking = true;
+    requestAnimationFrame(tick);
+  }, { passive: true });
+
+  var io = new IntersectionObserver(function (entries) {
+    active = entries[0].isIntersecting;
+    if (active) {
+      frame.style.willChange = 'opacity';
+      full.style.willChange  = 'opacity, transform';
+      requestAnimationFrame(tick);
+    } else {
+      frame.style.willChange = 'auto';
+      full.style.willChange  = 'auto';
+    }
+  }, { threshold: 0 });
+
+  io.observe(pin);
+}());
 
 /* ── Form ── */
 document.getElementById('cform').addEventListener('submit', async e => {
