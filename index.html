@@ -925,6 +925,7 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   var ctCta   = full.querySelector('.ct-cta');
   var ctNBtn  = full.querySelector('.ct-nbtn');
   var ctMedia = full.querySelector('.ct-media');
+  var skEls   = Array.from(skel.querySelectorAll('.sk'));
   var STAGES  = ['Grunnstruktur', 'Oppsett', 'Innhold', 'Ferdig'];
   var lastSi  = -1;
 
@@ -941,7 +942,16 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
     // Stage 1 — frame fades in (0 → 0.2)
     frame.style.opacity = smooth(remap(p, 0, 0.2));
 
-    // Stage 2/3 — skeleton fades out (0.38 → 0.65)
+    // Stage 1 — skeleton blocks stagger in from below (Grunnstruktur = assembly in progress)
+    // Each block starts 0.015 later than the previous; all settled by p≈0.28
+    skEls.forEach(function(el, i) {
+      var lo = i * 0.015;
+      var t  = smooth(remap(p, lo, lo + 0.13));
+      el.style.opacity   = t;
+      el.style.transform = 'translateY(' + ((1 - t) * 14) + 'px)';
+    });
+
+    // Stage 2/3 — skeleton container fades out once content takes over (0.38 → 0.65)
     skel.style.opacity = 1 - smooth(remap(p, 0.38, 0.65));
 
     // Stage 3 — content fades in + settles (0.45 → 0.78)
