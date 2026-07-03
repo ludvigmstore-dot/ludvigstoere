@@ -293,12 +293,13 @@
     /* Why — ghost numbers slide in from the right */
     .why-item { position: relative; overflow: hidden; }
     .why-num {
-      position: absolute; bottom: -14px; right: -4px;
+      position: absolute; bottom: -14px; right: -4px; z-index: 0;
       font-family: 'Playfair Display', serif; font-size: 7.5rem; font-weight: 900; line-height: 1;
       color: var(--border); user-select: none; pointer-events: none;
       opacity: 0; transform: translateX(20px);
       transition: opacity 0.9s var(--ease) 0.3s, transform 0.9s var(--ease) 0.3s;
     }
+    .why-label, .why-title, .why-text { position: relative; z-index: 1; }
     .rv.on .why-num { opacity: 1; transform: translateX(0); }
 
     /* ── PRICING ── */
