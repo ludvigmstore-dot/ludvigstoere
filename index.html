@@ -106,14 +106,33 @@
     }
     .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
 
-    /* ── Lang toggle ── */
-    .lang-toggle {
-      background: none; border: 1px solid var(--border); border-radius: var(--r);
-      color: var(--muted); font-family: 'Inter', sans-serif; font-size: 0.72rem;
-      font-weight: 600; letter-spacing: 0.07em; padding: 4px 10px; cursor: pointer;
-      transition: color 0.2s, border-color 0.2s;
+    /* ── Lang float ── */
+    #flang {
+      position: fixed; bottom: 28px; left: 28px; z-index: 99;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+      pointer-events: none;
     }
-    .lang-toggle:hover { color: var(--ink); border-color: var(--muted); }
+    #flang.on { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .flang-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--ink); color: var(--bg);
+      border: none; border-radius: 100px;
+      padding: 9px 18px 9px 14px;
+      font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.04em; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(20,18,16,0.18);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .flang-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,75,49,0.25); }
+    .flang-globe { flex-shrink: 0; opacity: 0.7; }
+    .flang-code {
+      display: inline-block;
+      transition: transform 0.18s cubic-bezier(0.4,0,0.2,1), opacity 0.18s;
+      transform-origin: center;
+    }
+    .flang-code.out { transform: rotateX(90deg); opacity: 0; }
+    html[data-theme="dark"] .flang-btn { box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
 
     /* ── Theme toggle ── */
     .theme-toggle {
@@ -648,9 +667,6 @@
       <li><a href="#process" data-i18n="nav-how">Slik funker det</a></li>
       <li><a href="#why" data-i18n="nav-why">Hvorfor meg</a></li>
       <li><a href="#services" data-i18n="nav-prices">Priser</a></li>
-      <li class="lang-li">
-        <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">EN</button>
-      </li>
       <li class="toggle-li">
         <button class="theme-toggle" id="theme-toggle" aria-label="Bytt fargetema">
           <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1001,6 +1017,17 @@
   </div>
 </footer>
 
+<!-- FLOAT LANG -->
+<div id="flang">
+  <button class="flang-btn" id="lang-toggle" aria-label="Switch language">
+    <svg class="flang-globe" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    </svg>
+    <span class="flang-code">EN</span>
+  </button>
+</div>
+
 <!-- FLOAT CTA -->
 <div id="fcta">
   <a href="#contact" class="fbtn">
@@ -1047,7 +1074,9 @@ document.querySelectorAll('[data-target]').forEach(el => cntObs.observe(el));
 addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('sc', scrollY > 30);
   document.getElementById('fcta').classList.toggle('on', scrollY > 500);
+  document.getElementById('flang').classList.toggle('on', scrollY > 200);
 });
+setTimeout(() => document.getElementById('flang').classList.add('on'), 800);
 
 /* ── Theme toggle ── */
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -1256,30 +1285,54 @@ var currentLang = localStorage.getItem('lang') || 'no';
 
 function applyLang(lang) {
   var t = i18nData[lang];
-  document.querySelectorAll('[data-i18n]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) el.textContent = t[key];
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n-html');
-    if (t[key] !== undefined) el.innerHTML = t[key];
-  });
-  document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n-ph');
-    if (t[key] !== undefined) el.placeholder = t[key];
-  });
-  if (window.__buildStages && t['build-stages']) {
-    t['build-stages'].forEach(function(s, i) { window.__buildStages[i] = s; });
-    var stageTxt = document.getElementById('build-stage-txt');
-    if (stageTxt) stageTxt.textContent = window.__buildStages[0];
-  }
-  document.getElementById('lang-toggle').textContent = lang === 'no' ? 'EN' : 'NO';
-  document.documentElement.lang = lang;
-  currentLang = lang;
-  localStorage.setItem('lang', lang);
+  var main = document.querySelector('body');
+  // Fade page content
+  main.style.transition = 'opacity 0.12s';
+  main.style.opacity = '0.55';
+  setTimeout(function() {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-html');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-ph');
+      if (t[key] !== undefined) el.placeholder = t[key];
+    });
+    if (window.__buildStages && t['build-stages']) {
+      t['build-stages'].forEach(function(s, i) { window.__buildStages[i] = s; });
+      var stageTxt = document.getElementById('build-stage-txt');
+      if (stageTxt) stageTxt.textContent = window.__buildStages[0];
+    }
+    document.documentElement.lang = lang;
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    main.style.opacity = '1';
+    setTimeout(function() { main.style.transition = ''; }, 130);
+  }, 120);
+  // Flip the code letters
+  var code = document.querySelector('.flang-code');
+  code.classList.add('out');
+  setTimeout(function() {
+    code.textContent = lang === 'no' ? 'EN' : 'NO';
+    code.classList.remove('out');
+  }, 180);
 }
 
-if (currentLang === 'en') applyLang('en');
+if (currentLang === 'en') {
+  // Apply without animation on initial load
+  var t = i18nData['en'];
+  document.querySelectorAll('[data-i18n]').forEach(function(el) { var k=el.getAttribute('data-i18n'); if(t[k]!==undefined) el.textContent=t[k]; });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el) { var k=el.getAttribute('data-i18n-html'); if(t[k]!==undefined) el.innerHTML=t[k]; });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el) { var k=el.getAttribute('data-i18n-ph'); if(t[k]!==undefined) el.placeholder=t[k]; });
+  document.documentElement.lang = 'en';
+  currentLang = 'en';
+  var code = document.querySelector('.flang-code');
+  if (code) code.textContent = 'NO';
+}
 
 document.getElementById('lang-toggle').addEventListener('click', function() {
   applyLang(currentLang === 'no' ? 'en' : 'no');
