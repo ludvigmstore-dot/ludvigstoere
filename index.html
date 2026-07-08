@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LudvigStoere | Nettsider levert på dager</title>
   <meta name="description" content="Presis webutvikling med AI-verktøy. For en brøkdel av hva byråer tar." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNSIgZmlsbD0iIzFFMUMxOSIvPjx0ZXh0IHg9IjE2IiB5PSIyMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNFOEU0REMiPkxTPC90ZXh0Pjwvc3ZnPg==" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -104,6 +105,15 @@
       transition: background 0.2s, transform 0.2s;
     }
     .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+    /* ── Lang toggle ── */
+    .lang-toggle {
+      background: none; border: 1px solid var(--border); border-radius: var(--r);
+      color: var(--muted); font-family: 'Inter', sans-serif; font-size: 0.72rem;
+      font-weight: 600; letter-spacing: 0.07em; padding: 4px 10px; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang-toggle:hover { color: var(--ink); border-color: var(--muted); }
 
     /* ── Theme toggle ── */
     .theme-toggle {
@@ -465,7 +475,7 @@
       .why-item:first-child { padding-left: 0; }
       .why-item:last-child { border-bottom: none; }
       .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-      .nav-links li:not(:last-child):not(.toggle-li) { display: none; }
+      .nav-links li:not(:last-child):not(.toggle-li):not(.lang-li) { display: none; }
     }
     @media (max-width: 600px) {
       .wrap { padding: 0 20px; }
@@ -635,9 +645,12 @@
   <div class="wrap nav-in">
     <a href="#" class="nav-logo">LudvigStoere</a>
     <ul class="nav-links">
-      <li><a href="#process">Slik funker det</a></li>
-      <li><a href="#why">Hvorfor meg</a></li>
-      <li><a href="#services">Priser</a></li>
+      <li><a href="#process" data-i18n="nav-how">Slik funker det</a></li>
+      <li><a href="#why" data-i18n="nav-why">Hvorfor meg</a></li>
+      <li><a href="#services" data-i18n="nav-prices">Priser</a></li>
+      <li class="lang-li">
+        <button class="lang-toggle" id="lang-toggle" aria-label="Switch language">EN</button>
+      </li>
       <li class="toggle-li">
         <button class="theme-toggle" id="theme-toggle" aria-label="Bytt fargetema">
           <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -652,7 +665,7 @@
           </svg>
         </button>
       </li>
-      <li><a href="#contact" class="nav-cta">Kontakt meg</a></li>
+      <li><a href="#contact" class="nav-cta" data-i18n="nav-contact">Kontakt meg</a></li>
     </ul>
   </div>
 </nav>
@@ -662,32 +675,32 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="hero-eyebrow">Webutvikling · Norway</div>
+        <div class="hero-eyebrow" data-i18n="hero-eyebrow">Webutvikling · Norway</div>
         <h1 class="hero-headline display">
-          <span class="hero-line"><span class="hero-line-inner" id="hl1">Du betaler</span></span>
-          <span class="hero-line"><span class="hero-line-inner" id="hl2">for nettsider,</span></span>
-          <span class="hero-line"><span class="hero-line-inner accent" id="hl3">ikke møter.</span></span>
+          <span class="hero-line"><span class="hero-line-inner" id="hl1" data-i18n="hero-line-1">Du betaler</span></span>
+          <span class="hero-line"><span class="hero-line-inner" id="hl2" data-i18n="hero-line-2">for nettsider,</span></span>
+          <span class="hero-line"><span class="hero-line-inner accent" id="hl3" data-i18n="hero-line-3">ikke møter.</span></span>
         </h1>
-        <p class="hero-sub">
+        <p class="hero-sub" data-i18n="hero-sub">
           Presis webutvikling med AI-verktøy. For en brøkdel av hva byråer tar, og levert mens de fremdeles planlegger det første møtet.
         </p>
         <div class="hero-actions">
-          <a href="#contact" class="btn-primary">Kontakt meg</a>
-          <a href="#process" class="btn-ghost">Se hvordan det funker</a>
+          <a href="#contact" class="btn-primary" data-i18n="hero-cta-primary">Kontakt meg</a>
+          <a href="#process" class="btn-ghost" data-i18n="hero-cta-ghost">Se hvordan det funker</a>
         </div>
       </div>
       <div class="hero-sidebar">
         <div class="sidebar-stat">
           <div class="sidebar-num">4<span class="accent">.</span></div>
-          <div class="sidebar-desc">Dager fra første samtale til live nettside</div>
+          <div class="sidebar-desc" data-i18n="stat-side-1">Dager fra første samtale til live nettside</div>
         </div>
         <div class="sidebar-stat">
           <div class="sidebar-num">1<span class="accent">.</span></div>
-          <div class="sidebar-desc">Person bak alt arbeidet. Ingen mellomledd, ingen forsinkelser.</div>
+          <div class="sidebar-desc" data-i18n="stat-side-2">Person bak alt arbeidet. Ingen mellomledd, ingen forsinkelser.</div>
         </div>
         <div class="sidebar-stat">
           <div class="sidebar-num">0<span class="accent">.</span></div>
-          <div class="sidebar-desc">Bindingstid. Ingen vedlikeholdsavgift. Du eier alt.</div>
+          <div class="sidebar-desc" data-i18n="stat-side-3">Bindingstid. Ingen vedlikeholdsavgift. Du eier alt.</div>
         </div>
       </div>
     </div>
@@ -700,15 +713,15 @@
     <div class="stats-inner">
       <div class="stat-item rv">
         <div class="stat-big display accent">16</div>
-        <p class="stat-label">År gammel. Ingen byråkrati, ingen unødvendige utgifter. Bare arbeidet.</p>
+        <p class="stat-label" data-i18n="stat-1-label">År gammel. Ingen byråkrati, ingen unødvendige utgifter. Bare arbeidet.</p>
       </div>
       <div class="stat-item rv d1">
         <div class="stat-big display accent">48t</div>
-        <p class="stat-label">Til første utkast. Ikke uker med «vi jobber med det».</p>
+        <p class="stat-label" data-i18n="stat-2-label">Til første utkast. Ikke uker med «vi jobber med det».</p>
       </div>
       <div class="stat-item rv d2">
         <div class="stat-big display" data-target="100" data-suffix="%">0%</div>
-        <p class="stat-label">Skreddersydd kode. Ingen WordPress-maler, ingen snarveier.</p>
+        <p class="stat-label" data-i18n="stat-3-label">Skreddersydd kode. Ingen WordPress-maler, ingen snarveier.</p>
       </div>
     </div>
   </div>
@@ -719,8 +732,8 @@
   <div class="build-pin" id="build-pin">
     <div class="build-sticky">
       <div class="build-hd">
-        <p class="section-label">Prosessen</p>
-        <p class="build-sub">Scroll og se en nettside ta form fra bunnen.</p>
+        <p class="section-label" data-i18n="build-label">Prosessen</p>
+        <p class="build-sub" data-i18n="build-sub">Scroll og se en nettside ta form fra bunnen.</p>
       </div>
       <div class="device-wrap" aria-hidden="true">
         <div class="device-frame" id="device-frame">
@@ -790,10 +803,10 @@
   <div class="wrap">
     <div class="process-header rv">
       <div>
-        <p class="section-label">Slik funker det</p>
-        <h2 class="section-h display">Tre steg.<br>Ingen overraskelser.</h2>
+        <p class="section-label" data-i18n="process-label">Slik funker det</p>
+        <h2 class="section-h display" data-i18n-html="process-h">Tre steg.<br>Ingen overraskelser.</h2>
       </div>
-      <p class="process-intro">
+      <p class="process-intro" data-i18n="process-intro">
         Jeg gjør det enkelt med vilje. Du bruker ikke tid på prosjektstyringsverktøy, lange e-posttråder eller statusmøter. Du forteller meg hva du trenger, jeg bygger, du eier resultatet.
       </p>
     </div>
@@ -801,22 +814,22 @@
       <div class="step rv">
         <div class="step-num">01</div>
         <div>
-          <div class="step-title">Ta kontakt, på din måte</div>
-          <p class="step-text">Ta en kort samtale med meg, eller tekst meg akkurat hva du ønsker. Ingen lang beskrivelse nødvendig. Basert på det sender jeg et utkast, også sier du om det er noe du vil endre.</p>
+          <div class="step-title" data-i18n="step-1-title">Ta kontakt, på din måte</div>
+          <p class="step-text" data-i18n="step-1-text">Ta en kort samtale med meg, eller tekst meg akkurat hva du ønsker. Ingen lang beskrivelse nødvendig. Basert på det sender jeg et utkast, også sier du om det er noe du vil endre.</p>
         </div>
       </div>
       <div class="step rv d1">
         <div class="step-num">02</div>
         <div>
-          <div class="step-title">Jeg bygger</div>
-          <p class="step-text">Første versjon er klar innen 48 timer. Du gir tilbakemeldinger, jeg justerer til det er riktig. Ingen ventetid mellom runder. Jeg jobber raskt.</p>
+          <div class="step-title" data-i18n="step-2-title">Jeg bygger</div>
+          <p class="step-text" data-i18n="step-2-text">Første versjon er klar innen 48 timer. Du gir tilbakemeldinger, jeg justerer til det er riktig. Ingen ventetid mellom runder. Jeg jobber raskt.</p>
         </div>
       </div>
       <div class="step rv d2">
         <div class="step-num">03</div>
         <div>
-          <div class="step-title">Du eier alt</div>
-          <p class="step-text">Du får all koden. Vil du ha noen andre til å vedlikeholde den etter hvert? Helt greit. Det er din nettside, ikke min. Ingen bindingstid, ingen månedlig avgift.</p>
+          <div class="step-title" data-i18n="step-3-title">Du eier alt</div>
+          <p class="step-text" data-i18n="step-3-text">Du får all koden. Vil du ha noen andre til å vedlikeholde den etter hvert? Helt greit. Det er din nettside, ikke min. Ingen bindingstid, ingen månedlig avgift.</p>
         </div>
       </div>
     </div>
@@ -826,67 +839,67 @@
 <!-- SERVICES / PRICING -->
 <section id="services">
   <div class="wrap">
-    <p class="section-label rv" style="margin-bottom:48px;">Tjenester og priser</p>
+    <p class="section-label rv" style="margin-bottom:48px;" data-i18n="services-label">Tjenester og priser</p>
     <div class="price-grid">
 
       <!-- START -->
       <div class="price-card rv">
         <div class="price-tier">Start</div>
         <div class="price-amount">1 500 kr</div>
-        <p class="price-tagline">Én-siders nettside — klar på 5 virkedager</p>
+        <p class="price-tagline" data-i18n="start-tagline">Én-siders nettside — klar på 5 virkedager</p>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li class="price-feature"><span class="price-check">✓</span>Én-siders nettside</li>
-          <li class="price-feature"><span class="price-check">✓</span>Mobilvennlig design</li>
-          <li class="price-feature"><span class="price-check">✓</span>Kontaktinfo, åpningstider, bilder</li>
-          <li class="price-feature"><span class="price-check">✓</span>1 revisjonsrunde</li>
-          <li class="price-feature"><span class="price-check">✓</span>Levering på 5 virkedager</li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="start-f1">Én-siders nettside</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="start-f2">Mobilvennlig design</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="start-f3">Kontaktinfo, åpningstider, bilder</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="start-f4">1 revisjonsrunde</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="start-f5">Levering på 5 virkedager</span></li>
         </ul>
-        <a href="#contact" class="price-cta">Velg Start</a>
+        <a href="#contact" class="price-cta" data-i18n="start-cta">Velg Start</a>
       </div>
 
       <!-- STANDARD — featured -->
       <div class="price-card featured rv d1">
-        <span class="price-badge">Mest populær</span>
+        <span class="price-badge" data-i18n="std-badge">Mest populær</span>
         <div class="price-tier">Standard</div>
         <div class="price-amount">2 500 kr</div>
-        <p class="price-tagline">Inntil 5 sider — levert på 7–10 virkedager</p>
+        <p class="price-tagline" data-i18n="std-tagline">Inntil 5 sider — levert på 7–10 virkedager</p>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li class="price-feature"><span class="price-check">✓</span>Inntil 5 sider (forside, om oss, meny/tjenester, kontakt m.m.)</li>
-          <li class="price-feature"><span class="price-check">✓</span>Meny- eller tjenestevisning</li>
-          <li class="price-feature"><span class="price-check">✓</span>Google Maps + kobling til Google Business</li>
-          <li class="price-feature"><span class="price-check">✓</span>Grunnleggende SEO</li>
-          <li class="price-feature"><span class="price-check">✓</span>3 revisjonsrunder</li>
-          <li class="price-feature"><span class="price-check">✓</span>Domene og hosting satt opp</li>
-          <li class="price-feature"><span class="price-check">✓</span>Levering på 7–10 virkedager</li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f1">Inntil 5 sider (forside, om oss, meny/tjenester, kontakt m.m.)</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f2">Meny- eller tjenestevisning</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f3">Google Maps + kobling til Google Business</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f4">Grunnleggende SEO</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f5">3 revisjonsrunder</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f6">Domene og hosting satt opp</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="std-f7">Levering på 7–10 virkedager</span></li>
         </ul>
-        <a href="#contact" class="price-cta">Velg Standard</a>
+        <a href="#contact" class="price-cta" data-i18n="std-cta">Velg Standard</a>
       </div>
 
       <!-- PREMIUM -->
       <div class="price-card rv d2">
         <div class="price-tier">Premium</div>
         <div class="price-amount">4 000 kr</div>
-        <p class="price-tagline">Alt i Standard, pluss mer</p>
+        <p class="price-tagline" data-i18n="prem-tagline">Alt i Standard, pluss mer</p>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li class="price-feature"><span class="price-check">✓</span>Alt i Standard</li>
-          <li class="price-feature"><span class="price-check">✓</span>Bestillings-/bookingskjema med e-postvarsling</li>
-          <li class="price-feature"><span class="price-check">✓</span>Animerte seksjoner og mikro-interaksjoner</li>
-          <li class="price-feature"><span class="price-check">✓</span>Prioritert levering (3–5 virkedager)</li>
-          <li class="price-feature"><span class="price-check">✓</span>3 måneder gratis oppfølging og endringer</li>
-          <li class="price-feature"><span class="price-check">✓</span>Google Analytics + bedre SEO</li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="prem-f1">Alt i Standard</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="prem-f2">Bestillings-/bookingskjema med e-postvarsling</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="prem-f3">Animerte seksjoner og mikro-interaksjoner</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="prem-f4">Prioritert levering (3–5 virkedager)</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="prem-f5">3 måneder gratis oppfølging og endringer</span></li>
+          <li class="price-feature"><span class="price-check">✓</span><span data-i18n="prem-f6">Google Analytics + bedre SEO</span></li>
         </ul>
-        <a href="#contact" class="price-cta">Velg Premium</a>
+        <a href="#contact" class="price-cta" data-i18n="prem-cta">Velg Premium</a>
       </div>
 
     </div>
 
     <!-- Maintenance add-on -->
     <div class="price-addon rv" style="transition-delay:0.18s;">
-      <p>Trenger du løpende hjelp etter levering? <strong>Hosting, nye bilder, tekstendringer og små oppdateringer</strong> — jeg er tilgjengelig. <strong>fra 200 kr/mnd</strong>.</p>
-      <a href="#contact" class="btn-ghost" style="white-space:nowrap; flex-shrink:0;">Ta kontakt</a>
+      <p data-i18n-html="addon-text">Trenger du løpende hjelp etter levering? <strong>Hosting, nye bilder, tekstendringer og små oppdateringer</strong> — jeg er tilgjengelig. <strong>fra 200 kr/mnd</strong>.</p>
+      <a href="#contact" class="btn-ghost" style="white-space:nowrap; flex-shrink:0;" data-i18n="addon-cta">Ta kontakt</a>
     </div>
 
   </div>
@@ -895,25 +908,25 @@
 <!-- WHY -->
 <section id="why">
   <div class="wrap">
-    <p class="section-label rv" style="margin-bottom:48px;">Hvorfor velge meg</p>
+    <p class="section-label rv" style="margin-bottom:48px;" data-i18n="why-label">Hvorfor velge meg</p>
     <div class="why-grid">
       <div class="why-item rv">
         <span class="why-num" aria-hidden="true">01</span>
-        <div class="why-label">Hastighet</div>
-        <h3 class="why-title display">Byrået ditt er i sitt tredje møte</h3>
-        <p class="why-text">Tradisjonelle byråer bruker 6–12 uker. Jeg bruker AI-verktøy som komprimerer den prosessen til dager. Du får det samme resultatet, uten å vente på at noen skal «finne tid i kalenderen».</p>
+        <div class="why-label" data-i18n="why-1-label">Hastighet</div>
+        <h3 class="why-title display" data-i18n="why-1-title">Byrået ditt er i sitt tredje møte</h3>
+        <p class="why-text" data-i18n="why-1-text">Tradisjonelle byråer bruker 6–12 uker. Jeg bruker AI-verktøy som komprimerer den prosessen til dager. Du får det samme resultatet, uten å vente på at noen skal «finne tid i kalenderen».</p>
       </div>
       <div class="why-item rv d1">
         <span class="why-num" aria-hidden="true">02</span>
-        <div class="why-label">Pris</div>
-        <h3 class="why-title display">Ingen betaler for møtene mine</h3>
-        <p class="why-text">Et byrå fakturerer for prosjektlederen, designeren, utvikleren, og de tre møtene de hadde om fontstørrelse. Jeg fakturerer for arbeidet. Det er hele forskjellen.</p>
+        <div class="why-label" data-i18n="why-2-label">Pris</div>
+        <h3 class="why-title display" data-i18n="why-2-title">Ingen betaler for møtene mine</h3>
+        <p class="why-text" data-i18n="why-2-text">Et byrå fakturerer for prosjektlederen, designeren, utvikleren, og de tre møtene de hadde om fontstørrelse. Jeg fakturerer for arbeidet. Det er hele forskjellen.</p>
       </div>
       <div class="why-item rv d2">
         <span class="why-num" aria-hidden="true">03</span>
-        <div class="why-label">Kvalitet</div>
-        <h3 class="why-title display">Skreddersydd kode, ikke klipt-og-limt</h3>
-        <p class="why-text">Nettsiden din er ikke en mal jeg tilpasser. Den er bygget fra bunnen for bedriften din. Det betyr at den er raskere, enklere å endre, og ser ikke ut som alle andres.</p>
+        <div class="why-label" data-i18n="why-3-label">Kvalitet</div>
+        <h3 class="why-title display" data-i18n="why-3-title">Skreddersydd kode, ikke klipt-og-limt</h3>
+        <p class="why-text" data-i18n="why-3-text">Nettsiden din er ikke en mal jeg tilpasser. Den er bygget fra bunnen for bedriften din. Det betyr at den er raskere, enklere å endre, og ser ikke ut som alle andres.</p>
       </div>
     </div>
   </div>
@@ -924,15 +937,15 @@
   <div class="wrap">
     <div class="about-grid">
       <div class="about-intro rv">
-        <p class="section-label" style="margin-bottom:16px;">Fra meg</p>
-        <p class="about-statement">Jeg bruker sommeren på å lage nettsider i stedet for å jobbe på butikk. Ikke fordi jeg må, men fordi det er hva jeg har lyst til å gjøre.</p>
-        <p class="about-sig">— Ludvig, 16 år</p>
+        <p class="section-label" style="margin-bottom:16px;" data-i18n="about-eyebrow">Fra meg</p>
+        <p class="about-statement" data-i18n="about-statement">Jeg bruker sommeren på å lage nettsider i stedet for å jobbe på butikk. Ikke fordi jeg må, men fordi det er hva jeg har lyst til å gjøre.</p>
+        <p class="about-sig" data-i18n="about-sig">— Ludvig, 16 år</p>
       </div>
       <div class="about-body rv d1">
-        <p class="section-label" style="margin-bottom:18px;">Om meg</p>
-        <p>Jeg er en 16 år gammel gutt fra Østlandet, glad i data, og starter på elektro videregående til høsten. Denne sommeren valgte jeg å bruke fritiden på noe jeg faktisk brenner for.</p>
-        <p>Det betyr at du ikke betaler for et byråkontor, prosjektledere eller ineffektive møter. Du betaler for <strong>selve nettsiden</strong>, bygget av noen som er genuint engasjert og som jobber raskt fordi det er gøy, ikke fordi klokken tikker.</p>
-        <p>Jeg bruker de beste AI-verktøyene for å levere et ordentlig resultat. Ikke snarveier. Bare en raskere prosess.</p>
+        <p class="section-label" style="margin-bottom:18px;" data-i18n="about-body-eyebrow">Om meg</p>
+        <p data-i18n="about-p1">Jeg er en 16 år gammel gutt fra Østlandet, glad i data, og starter på elektro videregående til høsten. Denne sommeren valgte jeg å bruke fritiden på noe jeg faktisk brenner for.</p>
+        <p data-i18n-html="about-p2">Det betyr at du ikke betaler for et byråkontor, prosjektledere eller ineffektive møter. Du betaler for <strong>selve nettsiden</strong>, bygget av noen som er genuint engasjert og som jobber raskt fordi det er gøy, ikke fordi klokken tikker.</p>
+        <p data-i18n="about-p3">Jeg bruker de beste AI-verktøyene for å levere et ordentlig resultat. Ikke snarveier. Bare en raskere prosess.</p>
       </div>
     </div>
   </div>
@@ -942,38 +955,38 @@
 <section id="contact">
   <div class="wrap contact-grid">
     <div class="contact-left rv">
-      <p class="section-label" style="margin-bottom:20px;">Kom i gang</p>
-      <h2 class="section-h display" style="margin-bottom:18px;">Klar for en nettside som faktisk funker?</h2>
-      <p class="contact-sub">Ta en kort samtale, eller tekst meg akkurat hva du vil ha. Jeg sender et utkast, du gir tilbakemelding. Enkelt som det.</p>
+      <p class="section-label" style="margin-bottom:20px;" data-i18n="contact-label">Kom i gang</p>
+      <h2 class="section-h display" style="margin-bottom:18px;" data-i18n="contact-h">Klar for en nettside som faktisk funker?</h2>
+      <p class="contact-sub" data-i18n="contact-sub">Ta en kort samtale, eller tekst meg akkurat hva du vil ha. Jeg sender et utkast, du gir tilbakemelding. Enkelt som det.</p>
       <div class="contact-point">
         <span class="cp-marker">✓</span>
-        <p>Ring, send melding, eller fyll ut skjemaet. Du velger.</p>
+        <p data-i18n="contact-p1">Ring, send melding, eller fyll ut skjemaet. Du velger.</p>
       </div>
       <div class="contact-point">
         <span class="cp-marker">✓</span>
-        <p>Første utkast innen 48 timer etter oppstart</p>
+        <p data-i18n="contact-p2">Første utkast innen 48 timer etter oppstart</p>
       </div>
       <div class="contact-point">
         <span class="cp-marker">✓</span>
-        <p>Fast pris avtalt på forhånd. Ingen overraskelser.</p>
+        <p data-i18n="contact-p3">Fast pris avtalt på forhånd. Ingen overraskelser.</p>
       </div>
     </div>
     <div class="rv d1">
       <form class="cform" id="cform">
         <div class="fgrp">
-          <label class="flbl" for="name">Navn</label>
-          <input class="finp" type="text" id="name" name="name" placeholder="Ditt navn" required />
+          <label class="flbl" for="name" data-i18n="form-name-label">Navn</label>
+          <input class="finp" type="text" id="name" name="name" placeholder="Ditt navn" data-i18n-ph="form-name-ph" required />
         </div>
         <div class="fgrp">
-          <label class="flbl" for="email">E-post</label>
-          <input class="finp" type="email" id="email" name="email" placeholder="deg@bedrift.no" required />
+          <label class="flbl" for="email" data-i18n="form-email-label">E-post</label>
+          <input class="finp" type="email" id="email" name="email" placeholder="deg@bedrift.no" data-i18n-ph="form-email-ph" required />
         </div>
         <div class="fgrp">
-          <label class="flbl" for="msg">Hva trenger du?</label>
-          <textarea class="ftxt" id="msg" name="message" placeholder="Fortell meg kort om prosjektet..." required></textarea>
+          <label class="flbl" for="msg" data-i18n="form-msg-label">Hva trenger du?</label>
+          <textarea class="ftxt" id="msg" name="message" placeholder="Fortell meg kort om prosjektet..." data-i18n-ph="form-msg-ph" required></textarea>
         </div>
-        <button type="submit" class="fsub" id="fsub">Send melding</button>
-        <p class="fnote">Ingen salgspitch. Bare en ekte samtale.</p>
+        <button type="submit" class="fsub" id="fsub" data-i18n="form-submit">Send melding</button>
+        <p class="fnote" data-i18n="form-note">Ingen salgspitch. Bare en ekte samtale.</p>
       </form>
     </div>
   </div>
@@ -983,8 +996,8 @@
 <footer>
   <div class="wrap foot-in">
     <span class="foot-logo">LudvigStoere</span>
-    <p>© 2025 LudvigStoere. Alle rettigheter forbeholdt.</p>
-    <span class="foot-tag">Webutvikling · Norway</span>
+    <p data-i18n="footer-copy">© 2025 LudvigStoere. Alle rettigheter forbeholdt.</p>
+    <span class="foot-tag" data-i18n="footer-tag">Webutvikling · Norway</span>
   </div>
 </footer>
 
@@ -1072,6 +1085,7 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   var ctMedia = full.querySelector('.ct-media');
   var skEls   = Array.from(skel.querySelectorAll('.sk'));
   var STAGES  = ['Grunnstruktur', 'Oppsett', 'Innhold', 'Ferdig'];
+  window.__buildStages = STAGES;
   var lastSi  = -1;
 
   function remap(p, lo, hi) { return Math.max(0, Math.min(1, (p - lo) / (hi - lo))); }
@@ -1147,6 +1161,129 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 
   io.observe(pin);
 }());
+
+/* ── i18n ── */
+var i18nData = {
+  no: {
+    'nav-how':'Slik funker det','nav-why':'Hvorfor meg','nav-prices':'Priser','nav-contact':'Kontakt meg',
+    'hero-eyebrow':'Webutvikling · Norway',
+    'hero-line-1':'Du betaler','hero-line-2':'for nettsider,','hero-line-3':'ikke møter.',
+    'hero-sub':'Presis webutvikling med AI-verktøy. For en brøkdel av hva byråer tar, og levert mens de fremdeles planlegger det første møtet.',
+    'hero-cta-primary':'Kontakt meg','hero-cta-ghost':'Se hvordan det funker',
+    'stat-side-1':'Dager fra første samtale til live nettside',
+    'stat-side-2':'Person bak alt arbeidet. Ingen mellomledd, ingen forsinkelser.',
+    'stat-side-3':'Bindingstid. Ingen vedlikeholdsavgift. Du eier alt.',
+    'stat-1-label':'År gammel. Ingen byråkrati, ingen unødvendige utgifter. Bare arbeidet.',
+    'stat-2-label':'Til første utkast. Ikke uker med «vi jobber med det».',
+    'stat-3-label':'Skreddersydd kode. Ingen WordPress-maler, ingen snarveier.',
+    'build-label':'Prosessen','build-sub':'Scroll og se en nettside ta form fra bunnen.',
+    'process-label':'Slik funker det','process-h':'Tre steg.<br>Ingen overraskelser.',
+    'process-intro':'Jeg gjør det enkelt med vilje. Du bruker ikke tid på prosjektstyringsverktøy, lange e-posttråder eller statusmøter. Du forteller meg hva du trenger, jeg bygger, du eier resultatet.',
+    'step-1-title':'Ta kontakt, på din måte','step-1-text':'Ta en kort samtale med meg, eller tekst meg akkurat hva du ønsker. Ingen lang beskrivelse nødvendig. Basert på det sender jeg et utkast, også sier du om det er noe du vil endre.',
+    'step-2-title':'Jeg bygger','step-2-text':'Første versjon er klar innen 48 timer. Du gir tilbakemeldinger, jeg justerer til det er riktig. Ingen ventetid mellom runder. Jeg jobber raskt.',
+    'step-3-title':'Du eier alt','step-3-text':'Du får all koden. Vil du ha noen andre til å vedlikeholde den etter hvert? Helt greit. Det er din nettside, ikke min. Ingen bindingstid, ingen månedlig avgift.',
+    'services-label':'Tjenester og priser',
+    'start-tagline':'Én-siders nettside — klar på 5 virkedager',
+    'start-f1':'Én-siders nettside','start-f2':'Mobilvennlig design','start-f3':'Kontaktinfo, åpningstider, bilder','start-f4':'1 revisjonsrunde','start-f5':'Levering på 5 virkedager','start-cta':'Velg Start',
+    'std-badge':'Mest populær','std-tagline':'Inntil 5 sider — levert på 7–10 virkedager',
+    'std-f1':'Inntil 5 sider (forside, om oss, meny/tjenester, kontakt m.m.)','std-f2':'Meny- eller tjenestevisning','std-f3':'Google Maps + kobling til Google Business','std-f4':'Grunnleggende SEO','std-f5':'3 revisjonsrunder','std-f6':'Domene og hosting satt opp','std-f7':'Levering på 7–10 virkedager','std-cta':'Velg Standard',
+    'prem-tagline':'Alt i Standard, pluss mer',
+    'prem-f1':'Alt i Standard','prem-f2':'Bestillings-/bookingskjema med e-postvarsling','prem-f3':'Animerte seksjoner og mikro-interaksjoner','prem-f4':'Prioritert levering (3–5 virkedager)','prem-f5':'3 måneder gratis oppfølging og endringer','prem-f6':'Google Analytics + bedre SEO','prem-cta':'Velg Premium',
+    'addon-text':'Trenger du løpende hjelp etter levering? <strong>Hosting, nye bilder, tekstendringer og små oppdateringer</strong> — jeg er tilgjengelig. <strong>fra 200 kr/mnd</strong>.','addon-cta':'Ta kontakt',
+    'why-label':'Hvorfor velge meg',
+    'why-1-label':'Hastighet','why-1-title':'Byrået ditt er i sitt tredje møte','why-1-text':'Tradisjonelle byråer bruker 6–12 uker. Jeg bruker AI-verktøy som komprimerer den prosessen til dager. Du får det samme resultatet, uten å vente på at noen skal «finne tid i kalenderen».',
+    'why-2-label':'Pris','why-2-title':'Ingen betaler for møtene mine','why-2-text':'Et byrå fakturerer for prosjektlederen, designeren, utvikleren, og de tre møtene de hadde om fontstørrelse. Jeg fakturerer for arbeidet. Det er hele forskjellen.',
+    'why-3-label':'Kvalitet','why-3-title':'Skreddersydd kode, ikke klipt-og-limt','why-3-text':'Nettsiden din er ikke en mal jeg tilpasser. Den er bygget fra bunnen for bedriften din. Det betyr at den er raskere, enklere å endre, og ser ikke ut som alle andres.',
+    'about-eyebrow':'Fra meg','about-statement':'Jeg bruker sommeren på å lage nettsider i stedet for å jobbe på butikk. Ikke fordi jeg må, men fordi det er hva jeg har lyst til å gjøre.','about-sig':'— Ludvig, 16 år',
+    'about-body-eyebrow':'Om meg',
+    'about-p1':'Jeg er en 16 år gammel gutt fra Østlandet, glad i data, og starter på elektro videregående til høsten. Denne sommeren valgte jeg å bruke fritiden på noe jeg faktisk brenner for.',
+    'about-p2':'Det betyr at du ikke betaler for et byråkontor, prosjektledere eller ineffektive møter. Du betaler for <strong>selve nettsiden</strong>, bygget av noen som er genuint engasjert og som jobber raskt fordi det er gøy, ikke fordi klokken tikker.',
+    'about-p3':'Jeg bruker de beste AI-verktøyene for å levere et ordentlig resultat. Ikke snarveier. Bare en raskere prosess.',
+    'contact-label':'Kom i gang','contact-h':'Klar for en nettside som faktisk funker?',
+    'contact-sub':'Ta en kort samtale, eller tekst meg akkurat hva du vil ha. Jeg sender et utkast, du gir tilbakemelding. Enkelt som det.',
+    'contact-p1':'Ring, send melding, eller fyll ut skjemaet. Du velger.','contact-p2':'Første utkast innen 48 timer etter oppstart','contact-p3':'Fast pris avtalt på forhånd. Ingen overraskelser.',
+    'form-name-label':'Navn','form-name-ph':'Ditt navn','form-email-label':'E-post','form-email-ph':'deg@bedrift.no','form-msg-label':'Hva trenger du?','form-msg-ph':'Fortell meg kort om prosjektet...','form-submit':'Send melding','form-note':'Ingen salgspitch. Bare en ekte samtale.',
+    'footer-copy':'© 2025 LudvigStoere. Alle rettigheter forbeholdt.','footer-tag':'Webutvikling · Norway',
+    'fcta-btn':'Kontakt meg',
+    'build-stages':['Grunnstruktur','Oppsett','Innhold','Ferdig']
+  },
+  en: {
+    'nav-how':'How it works','nav-why':'Why me','nav-prices':'Pricing','nav-contact':'Contact me',
+    'hero-eyebrow':'Web Development · Norway',
+    'hero-line-1':'You pay for','hero-line-2':'websites,','hero-line-3':'not meetings.',
+    'hero-sub':'Precise web development with AI tools. At a fraction of what agencies charge, and delivered while they\'re still planning the first meeting.',
+    'hero-cta-primary':'Contact me','hero-cta-ghost':'See how it works',
+    'stat-side-1':'Days from first call to live website',
+    'stat-side-2':'One person behind all the work. No middlemen, no delays.',
+    'stat-side-3':'No lock-in. No maintenance fee. You own everything.',
+    'stat-1-label':'Years old. No bureaucracy, no unnecessary costs. Just the work.',
+    'stat-2-label':'To the first draft. Not weeks of "we\'re working on it".',
+    'stat-3-label':'Custom code. No WordPress templates, no shortcuts.',
+    'build-label':'The Process','build-sub':'Scroll and watch a website take shape from scratch.',
+    'process-label':'How it works','process-h':'Three steps.<br>No surprises.',
+    'process-intro':'I keep it simple on purpose. You don\'t spend time on project management tools, long email chains, or status meetings. You tell me what you need, I build it, you own the result.',
+    'step-1-title':'Get in touch, your way','step-1-text':'Have a quick call with me, or text me exactly what you want. No long brief needed. Based on that I\'ll send a draft, then you tell me if there\'s anything to change.',
+    'step-2-title':'I build','step-2-text':'First version is ready within 48 hours. You give feedback, I adjust until it\'s right. No waiting between rounds. I work fast.',
+    'step-3-title':'You own everything','step-3-text':'You get all the code. Want someone else to maintain it later? That\'s fine. It\'s your website, not mine. No lock-in, no monthly fee.',
+    'services-label':'Services & Pricing',
+    'start-tagline':'One-page website — ready in 5 business days',
+    'start-f1':'One-page website','start-f2':'Mobile-friendly design','start-f3':'Contact info, opening hours, images','start-f4':'1 revision round','start-f5':'Delivery in 5 business days','start-cta':'Choose Start',
+    'std-badge':'Most popular','std-tagline':'Up to 5 pages — delivered in 7–10 business days',
+    'std-f1':'Up to 5 pages (home, about, menu/services, contact, etc.)','std-f2':'Menu or services display','std-f3':'Google Maps + Google Business connection','std-f4':'Basic SEO','std-f5':'3 revision rounds','std-f6':'Domain and hosting set up','std-f7':'Delivery in 7–10 business days','std-cta':'Choose Standard',
+    'prem-tagline':'Everything in Standard, plus more',
+    'prem-f1':'Everything in Standard','prem-f2':'Booking/order form with email notifications','prem-f3':'Animated sections and micro-interactions','prem-f4':'Priority delivery (3–5 business days)','prem-f5':'3 months free support and changes','prem-f6':'Google Analytics + enhanced SEO','prem-cta':'Choose Premium',
+    'addon-text':'Need ongoing help after delivery? <strong>Hosting, new images, text updates and small changes</strong> — I\'m available. <strong>from 200 kr/month</strong>.','addon-cta':'Get in touch',
+    'why-label':'Why choose me',
+    'why-1-label':'Speed','why-1-title':'Your agency is in their third meeting','why-1-text':'Traditional agencies take 6–12 weeks. I use AI tools that compress that process to days. You get the same result, without waiting for someone to "find time in the calendar".',
+    'why-2-label':'Price','why-2-title':'Nobody pays for my meetings','why-2-text':'An agency bills for the project manager, the designer, the developer, and the three meetings they had about font size. I bill for the work. That\'s the whole difference.',
+    'why-3-label':'Quality','why-3-title':'Custom code, not copy-paste','why-3-text':'Your website isn\'t a template I adapt. It\'s built from the ground up for your business. That means it\'s faster, easier to update, and doesn\'t look like everyone else\'s.',
+    'about-eyebrow':'From me','about-statement':'I\'m spending my summer building websites instead of working in a shop. Not because I have to, but because it\'s what I want to do.','about-sig':'— Ludvig, age 16',
+    'about-body-eyebrow':'About me',
+    'about-p1':'I\'m a 16-year-old from Norway, into tech, and starting an electrical engineering high school program this autumn. This summer I chose to spend my free time on something I actually care about.',
+    'about-p2':'That means you don\'t pay for an agency office, project managers, or inefficient meetings. You pay for <strong>the website itself</strong>, built by someone who\'s genuinely engaged and works fast because it\'s fun, not because the clock is ticking.',
+    'about-p3':'I use the best AI tools to deliver a proper result. No shortcuts. Just a faster process.',
+    'contact-label':'Get started','contact-h':'Ready for a website that actually works?',
+    'contact-sub':'Have a quick call, or text me exactly what you want. I\'ll send a draft, you give feedback. Simple as that.',
+    'contact-p1':'Call, send a message, or fill out the form. Your choice.','contact-p2':'First draft within 48 hours of starting','contact-p3':'Fixed price agreed upfront. No surprises.',
+    'form-name-label':'Name','form-name-ph':'Your name','form-email-label':'Email','form-email-ph':'you@company.com','form-msg-label':'What do you need?','form-msg-ph':'Tell me briefly about your project...','form-submit':'Send message','form-note':'No sales pitch. Just a real conversation.',
+    'footer-copy':'© 2025 LudvigStoere. All rights reserved.','footer-tag':'Web Development · Norway',
+    'fcta-btn':'Contact me',
+    'build-stages':['Foundation','Setup','Content','Done']
+  }
+};
+
+var currentLang = localStorage.getItem('lang') || 'no';
+
+function applyLang(lang) {
+  var t = i18nData[lang];
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-html');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-ph');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  if (window.__buildStages && t['build-stages']) {
+    t['build-stages'].forEach(function(s, i) { window.__buildStages[i] = s; });
+    var stageTxt = document.getElementById('build-stage-txt');
+    if (stageTxt) stageTxt.textContent = window.__buildStages[0];
+  }
+  document.getElementById('lang-toggle').textContent = lang === 'no' ? 'EN' : 'NO';
+  document.documentElement.lang = lang;
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+}
+
+if (currentLang === 'en') applyLang('en');
+
+document.getElementById('lang-toggle').addEventListener('click', function() {
+  applyLang(currentLang === 'no' ? 'en' : 'no');
+});
 
 /* ── Form ── */
 document.getElementById('cform').addEventListener('submit', async e => {
