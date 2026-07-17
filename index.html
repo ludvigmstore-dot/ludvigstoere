@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <script>if(localStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"}}</script>
   <style>
     :root {
       --bg:           #F4F1EB;
@@ -166,7 +167,15 @@
       min-height: 100vh; display: flex; align-items: center;
       padding: 130px 0 80px;
       border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
     }
+    #hero-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; display: block;
+    }
+    #hero > .wrap { position: relative; z-index: 1; }
+    @media (prefers-reduced-motion: reduce) { #hero-canvas { display: none; } }
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr 280px;
@@ -688,6 +697,7 @@
 
 <!-- HERO -->
 <section id="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="hero-grid">
       <div>
@@ -1365,6 +1375,169 @@ document.getElementById('cform').addEventListener('submit', async e => {
     btn.disabled = false;
   }
 });
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+(function () {
+  const canvas  = document.getElementById('hero-canvas');
+  const heroEl  = document.getElementById('hero');
+  if (!canvas || !heroEl) return;
+
+  /* ── renderer ── */
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const isMobile = window.innerWidth < 768;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+
+  /* ── scene / camera ── */
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 50);
+  camera.position.z = 6;
+
+  /* ── color helper ── */
+  function cssCol(v) {
+    return new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+  }
+
+  /* ── main icosahedron ── */
+  const icoGeo = new THREE.IcosahedronGeometry(1.55, 1);
+
+  const glassMat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.06,
+    roughness: 0.1, metalness: 0.2, side: THREE.DoubleSide,
+  });
+  const glassMesh = new THREE.Mesh(icoGeo, glassMat);
+
+  const wireMat = new THREE.LineBasicMaterial({ color: cssCol('--accent'), transparent: true, opacity: 0.8 });
+  const wireframe = new THREE.LineSegments(new THREE.EdgesGeometry(icoGeo, 1), wireMat);
+
+  /* ── inner core ── */
+  const innerGeo = new THREE.IcosahedronGeometry(0.65, 0);
+  const innerMat = new THREE.MeshBasicMaterial({ color: cssCol('--accent'), transparent: true, opacity: 0.07 });
+  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+  const innerWireMat = new THREE.LineBasicMaterial({ color: cssCol('--accent'), transparent: true, opacity: 0.35 });
+  const innerWire = new THREE.LineSegments(new THREE.EdgesGeometry(innerGeo, 1), innerWireMat);
+
+  /* ── orbit rings (clean circles) ── */
+  function makeRing(r, mat) {
+    const pts = [];
+    for (let i = 0; i <= 96; i++) {
+      const a = (i / 96) * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, 0));
+    }
+    return new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat);
+  }
+  const ringMat1 = new THREE.LineBasicMaterial({ color: cssCol('--border'), transparent: true, opacity: 0.55 });
+  const ringMat2 = new THREE.LineBasicMaterial({ color: cssCol('--muted'),  transparent: true, opacity: 0.22 });
+  const ring1 = makeRing(2.3, ringMat1);  ring1.rotation.x =  Math.PI / 5;  ring1.rotation.z = 0.1;
+  const ring2 = makeRing(1.85, ringMat2); ring2.rotation.x = -Math.PI / 7;  ring2.rotation.z = -0.2;
+
+  /* ── floating particles ── */
+  const pc = isMobile ? 22 : 44;
+  const pArr = new Float32Array(pc * 3);
+  for (let i = 0; i < pc; i++) {
+    pArr[i*3]   = (Math.random() - 0.5) * 8;
+    pArr[i*3+1] = (Math.random() - 0.5) * 8;
+    pArr[i*3+2] = (Math.random() - 0.5) * 3;
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
+  const pMat = new THREE.PointsMaterial({ color: cssCol('--accent'), size: 0.028, transparent: true, opacity: 0.4, sizeAttenuation: true });
+  const particles = new THREE.Points(pGeo, pMat);
+
+  /* ── groups ── */
+  const icoGroup = new THREE.Group();
+  icoGroup.add(glassMesh, wireframe, innerMesh, innerWire);
+
+  const mainGroup = new THREE.Group();
+  mainGroup.add(icoGroup, ring1, ring2, particles);
+  mainGroup.position.x = isMobile ? 0.3 : 2.0;
+  scene.add(mainGroup);
+
+  /* ── lights ── */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  const accentLight = new THREE.PointLight(0xffffff, 1.8, 12);
+  accentLight.position.set(3, 2, 4);
+  scene.add(accentLight);
+
+  /* ── theme color refresh ── */
+  function refreshColors() {
+    const ac = cssCol('--accent');
+    const bo = cssCol('--border');
+    const mu = cssCol('--muted');
+    wireMat.color.copy(ac);
+    innerMat.color.copy(ac);
+    innerWireMat.color.copy(ac);
+    pMat.color.copy(ac);
+    ringMat1.color.copy(bo);
+    ringMat2.color.copy(mu);
+  }
+  new MutationObserver(refreshColors)
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  /* ── resize ── */
+  function onResize() {
+    const w = heroEl.clientWidth || window.innerWidth;
+    const h = heroEl.clientHeight || window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    mainGroup.position.x = w < 768 ? 0.3 : 2.0;
+  }
+  onResize();
+  window.addEventListener('resize', onResize, { passive: true });
+
+  /* ── mouse parallax ── */
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  window.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+    my = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  /* ── scroll parallax ── */
+  let scrollY = 0;
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+  /* ── render loop ── */
+  const clock = new THREE.Clock();
+  let raf = null;
+
+  function tick() {
+    raf = requestAnimationFrame(tick);
+    const t = clock.getElapsedTime();
+
+    tx += (mx - tx) * 0.045;
+    ty += (my - ty) * 0.045;
+
+    mainGroup.rotation.y = t * 0.11 + tx * 0.28;
+    mainGroup.rotation.x = ty * 0.13 - 0.04;
+    mainGroup.position.y = -scrollY * 0.0018;
+
+    icoGroup.rotation.y = -t * 0.07;
+    icoGroup.rotation.z =  t * 0.04;
+
+    ring1.rotation.z = t * 0.07;
+    ring2.rotation.z = -t * 0.05;
+
+    particles.rotation.y = t * 0.015;
+
+    accentLight.position.x = Math.sin(t * 0.35) * 4;
+    accentLight.position.z = Math.cos(t * 0.35) * 4;
+
+    renderer.render(scene, camera);
+  }
+
+  function start() { if (!raf) tick(); }
+  function stop()  { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+  /* ── lazy: only animate when hero is visible ── */
+  new IntersectionObserver(([entry]) => {
+    entry.isIntersecting ? start() : stop();
+  }, { threshold: 0 }).observe(heroEl);
+
+}());
 </script>
 </body>
 </html>
